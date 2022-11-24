@@ -52,14 +52,14 @@ class Card:
     def __str__(self):
         return"[" +self.__fraction[0] +self.__name[0] + " " + "{:02d}".format(self.__cost) + " " + "{:02d}".format(self.__attack_power)  + " " + "{:02d}".format(self.__health) +"]"
 
-    # def __repr__(self):
-    #     output = str(self.__name) \
-    #         + "\nRarity: "+ str(self.__rarity) \
-    #         + "\nFaction: "+ str(self.__fraction) \
-    #         +"\nResource Cost: "+str(self.__cost) \
-    #         +"\nHealth Points: "+ str(self.__health) \
-    #         +"\nAttak power: " + str(self.__attack_power)
-    #     return output
+    def __repr__(self):
+        output = str(self.__name) \
+            + "\nRarity: "+ str(self.__rarity) \
+            + "\nFaction: "+ str(self.__fraction) \
+            +"\nResource Cost: "+str(self.__cost) \
+            +"\nHealth Points: "+ str(self.__health) \
+            +"\nAttak power: " + str(self.__attack_power)
+        return output
 
     # __str__
 
@@ -182,7 +182,8 @@ class Player:
     
     def get_discarded(self,amount):
         return amount
-     
+    def get_name(self):
+        return self.__name
     def __repr__(self):
         
         output = "Player: " + self.__name + "\nScore: " + str(self.__score) + "\nResource Points: " + str(self.__resource_points) + "/" +str(self.__max_resource_points) + "\nDeck: " + str(self.__deck) 
@@ -190,11 +191,15 @@ class Player:
         return output
     # "[" +self.__name[0] +self.__score[0] + " " + "{:02d}".format(self.__max_resource_points) + " " + "{:02d}".format(self.__resource_points)  + " " + "{:02d}".format(self.__deck) +" " + "{:02d}".format(self.__discarded)+"]"
     def prn_h(self,i):
+        i = int(i)
         return(repr(self.__hand[i+1]))
     def prn_b(self,i):
         return(repr(self.__battalion[i+1]))
         
     def start_turn(self):
+
+        self.__max_resource_points += 1
+        self.__max_resource_points = min(self.__max_resource_points , 10)
 
         if self.__resource_points < self.__max_resource_points:
 
@@ -203,7 +208,6 @@ class Player:
         self.__max_resource_points += self.__prev_p 
 
 
-        self.__max_resource_points += 1
         print(repr(self))
         
 
