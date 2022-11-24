@@ -68,8 +68,9 @@ class Card:
     # method:
     def damage(self,amount):
         if amount <= self.__health:
+            r = self.__health-amount
             self.__health-=amount
-            return 0
+            return r
         else:
             current = self.__health
             self.__health = 0
@@ -162,7 +163,7 @@ class Player:
         self.__max_resource_points = 0
 
         self.__resource_points = min(0,self.__max_resource_points)
-
+        self.__tdm = 0
         self.__deck = make_deck(faction)
 
         self.__hand = []
@@ -191,18 +192,19 @@ class Player:
         return amount
     def get_name(self):
         return self.__name
-    def __repr__(self):
-        
-        output = "Player: " + self.__name + "\nScore: " + str(self.__score) + "\nResource Points: " + str(self.__resource_points) + "/" +str(self.__max_resource_points) + "\nDeck: " + str(self.__deck) 
-
-        return output
     # "[" +self.__name[0] +self.__score[0] + " " + "{:02d}".format(self.__max_resource_points) + " " + "{:02d}".format(self.__resource_points)  + " " + "{:02d}".format(self.__deck) +" " + "{:02d}".format(self.__discarded)+"]"
     def prn_h(self,i):
         i = int(i)
-      
-        return(repr(self.__hand[i+1]))
+
+        if(i > len(self.__hand)):
+            return "Invalid Card"
+        return(repr(self.__hand[i-1]))
     def prn_b(self,i):
-        return(repr(self.__battalion[i+1]))
+        i = int(i)
+        if(i > len(self.__battalion)):
+            return "Invalid Card"
+        return(repr(self.__battalion[i-1]))
+
         
     def start_turn(self):
 
@@ -217,7 +219,23 @@ class Player:
 
 
         print(repr(self))
-        
+    def make_move(self, i):
+        i = int(i)
+        a = self.__hand[i-1]
+        c = a.get_cost()
+        if(self.__resource_points - c) >= 0:
+            self.__resource_points -= c
+            self.__battalion.append(self.__hand.pop(i-1))
+            return True
+        else:
+            print("invalid card")
+    def end_turn(self):
+        total_dmg = sum([i.get_attack_power() for i in self.__battalion])
+        self.__tdm = total_dmg
+        print("DMGGGGGGGGGGGGGGGGGGGGGGG" , total_dmg)
+            
+
+    
 
        
     def has_lost(self):
@@ -232,7 +250,11 @@ class Player:
         h = ""
         for i in self.__hand:
             h += str(i) + " "
+        b = ""
+        for j in self.__battalion:
+            b += str(j) + " "
    
-        return (f"Player: {self.__name}\nScore: {self.__score}\nResource Points: {self.__resource_points}/{self.__max_resource_points}\nDeck: {len(self.__deck)}\nDiscared: {self.__discarded}\nBattalion: {self.__battalion}\nHand: {h}")
+   
+        return (f"Player: {self.__name}\nScore: {self.__score}\nResource Points: {self.__resource_points}/{self.__max_resource_points}\nDeck: {len(self.__deck)}\nDiscared: {self.__discarded}\nBattalion: {b}\nHand: {h}")
         
 

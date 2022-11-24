@@ -1,0 +1,1 @@
+print("teak \n mirror \n")
