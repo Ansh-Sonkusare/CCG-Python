@@ -145,17 +145,17 @@ class Player:
 
     slots = ["__name", "__score", "__resource_points", "__max_resource_points", "__deck", "__hand", "__battalion", "__discarded"]
 
-    def __init__(self, name, score, resource_points,max_resource_points,deck, discarded):
+    def __init__(self, name,faction):
 
         self.__name = name
 
-        self.__score = 16
+        self.__score = 20
 
         self.__max_resource_points = 10
 
-        self.__resource_points = self.__max_resource_points
+        self.__resource_points = min(0,self.__max_resource_points)
 
-        self.__deck = deck
+        self.__deck = make_deck(faction)
 
         self.__hand = []
 
@@ -165,7 +165,7 @@ class Player:
 
         for _ in range(5):
 
-            self.__hand.append(self.__deck)
+            self.__hand.append(self.__deck.pop())
 
         self.__hand.sort()
         
@@ -191,11 +191,12 @@ class Player:
 
     def start_turn(self):
 
-        if self.__max_resource_points < 10:
+        if self.__max_resource_points < self.__max_resource_points:
 
             self.__max_resource_points += 1
+        self.__hand.append(self.__deck.pop())
 
-        self.__resource_points = self.__max_resource_points
+     
 
         if len(self.__deck) > 0:
 
