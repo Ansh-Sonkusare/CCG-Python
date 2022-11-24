@@ -22,8 +22,11 @@ def main():
         for p in [p1 , p2]:
             if(p1.is_lost()):
                 print(f"{p1} is defeated!!{p2} Win!!")
+                return
             if(p2.is_lost()):
                 print(f"{p2} is defeated!!{p1} Win!!")
+                return
+
             p.start_turn()
 
             i = input(f"{p.get_name()}>>>")
