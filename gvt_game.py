@@ -13,9 +13,17 @@ def main():
     print_p(p1,p2)
 
     print()
+    
+
 
     while(True):
+
+
         for p in [p1 , p2]:
+            if(p1.is_lost()):
+                print(f"{p1} is defeated!!{p2} Win!!")
+            if(p2.is_lost()):
+                print(f"{p2} is defeated!!{p1} Win!!")
             p.start_turn()
 
             i = input(f"{p.get_name()}>>>")
@@ -50,8 +58,12 @@ def main():
 
 
                 if(str.lower(i[0]) == "q"):
-                    p.end_turn()
+                    edm = p.end_turn()
+                    e.be_damaged(edm)
                     break
+                if(str.lower(i[0]) == "mm"):
+                    print(p.get_prev())
+                
 
 
                 i = input(f"{p.get_name()}>>>")

@@ -67,14 +67,11 @@ class Card:
 
     # method:
     def damage(self,amount):
-        if amount <= self.__health:
-            r = self.__health-amount
-            self.__health-=amount
-            return r
-        else:
-            current = self.__health
-            self.__health = 0
-            return amount - current
+        
+        r = amount-self.__health
+        self.__health-=amount
+        return max(r , 0)
+       
     
     def is_conscious(self):
         return self.__health > 0
@@ -170,7 +167,7 @@ class Player:
 
         self.__battalion = []
 
-        self.__discarded = []
+        self.__discarded = 0
 
         for _ in range(5):
 
@@ -215,7 +212,8 @@ class Player:
 
             self.__resource_points += 1
         self.__hand.append(self.__deck.pop())
-        self.__max_resource_points += self.__prev_p 
+        self.__resource_points += self.__prev_p 
+        self.__resource_points = min(self.__resource_points , self.__max_resource_points)
 
 
         print(repr(self))
@@ -225,6 +223,7 @@ class Player:
         c = a.get_cost()
         if(self.__resource_points - c) >= 0:
             self.__resource_points -= c
+            self.__prev_p += c
             self.__battalion.append(self.__hand.pop(i-1))
             return True
         else:
@@ -233,12 +232,29 @@ class Player:
         total_dmg = sum([i.get_attack_power() for i in self.__battalion])
         self.__tdm = total_dmg
         print("DMGGGGGGGGGGGGGGGGGGGGGGG" , total_dmg)
+        return self.__tdm
+
+    def be_damaged(self , edm):
+        while(edm > 0 and len(self.__battalion) > 0):
+            i = self.__battalion.pop()
+            edm = i.damage(edm)
+            if(i.is_conscious() ):
+                self.__battalion.append(i)
+            else:
+                self.__discarded +=1
+        if(self.__max_resource_points>1):
+            self.__score -= edm
+
+            
+
+    def get_prev(self):
+        return self.__prev_p
             
 
     
 
        
-    def has_lost(self):
+    def is_lost(self):
         if(self.__score <= 0):
             return True 
         return False
