@@ -1,0 +1,5 @@
+[nouns:  cards, represent, chooses, draw, shuffled, take, attack]
+
+class: cards
+draw 
+represent
