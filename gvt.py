@@ -50,15 +50,17 @@ class Card:
     # __repr__
     # \ means line continuation
     def __str__(self):
+        # return " "
         return"[" +self.__fraction[0] +self.__name[0] + " " + "{:02d}".format(self.__cost) + " " + "{:02d}".format(self.__attack_power)  + " " + "{:02d}".format(self.__health) +"]"
 
     def __repr__(self):
+       
         output = str(self.__name) \
             + "\nRarity: "+ str(self.__rarity) \
             + "\nFaction: "+ str(self.__fraction) \
             +"\nResource Cost: "+str(self.__cost) \
             +"\nHealth Points: "+ str(self.__health) \
-            +"\nAttak power: " + str(self.__attack_power)
+            +"\nAttack power: " + str(self.__attack_power)
         return output
 
     # __str__
@@ -109,16 +111,21 @@ def make_card(faction, rarity):
     
     total = 0
     cost = 0
+    r =''
     if rarity == COMMON:
+        r = "C"
         total = 8
         cost = random.randint(1,3)
     elif rarity == UNCOMMON:
+        r = "U"
         total = 12
         cost = random.randint(2,5)
     elif rarity == RARE:
+        r = "R"
         total = 16
         cost = random.randint(4,7)
     elif rarity== LEGENDARY:
+        r = "L"
         total = 24
         cost = 10
     else:
@@ -126,7 +133,7 @@ def make_card(faction, rarity):
     
     health = random.randint(1,total)
     attack_power = total - health
-    return Card (name, rarity, cost, faction, attack_power, health)
+    return Card (name, cost, r, faction, attack_power, health)
 
 def make_deck(faction):
     deck=[]
@@ -192,6 +199,7 @@ class Player:
     # "[" +self.__name[0] +self.__score[0] + " " + "{:02d}".format(self.__max_resource_points) + " " + "{:02d}".format(self.__resource_points)  + " " + "{:02d}".format(self.__deck) +" " + "{:02d}".format(self.__discarded)+"]"
     def prn_h(self,i):
         i = int(i)
+      
         return(repr(self.__hand[i+1]))
     def prn_b(self,i):
         return(repr(self.__battalion[i+1]))

@@ -14,14 +14,26 @@ def main():
 
     while(True):
         for p in [p1 , p2]:
-            if p == p1:
-                e = p2
-            else:
-                e=p1
             p.start_turn()
+
             i = input(f"{p.get_name()}>>>")
-            print(str.strip(i))
-            if(str.lower(i[0]) == "h"):
-                n = i[2]
-                print(p.prn_h(n))
+            i = (str.split(i))
+
+            while(i[0] != "q"):
+                if p == p1:
+                    e = p2
+                else:
+                    e=p1
+
+                if(str.lower(i[0]) == "h"):
+                    n = i[1]
+                    print(n)
+                    print(p.prn_h(n))
+                    # print()
+
+                i = input(f"{p.get_name()}>>>")
+                i = (str.split(i))
+
+
+            
 main()
