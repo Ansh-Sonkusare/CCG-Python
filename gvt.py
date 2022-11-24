@@ -49,18 +49,19 @@ class Card:
     
     # __repr__
     # \ means line continuation
-    def __repr__(self):
-        output = self.__name \
-            + "\nRarity: "+ self.__rarity \
-            + "\nFaction: "+self.__fraction \
-            +"\nResource Cost: "+str(self.__cost) \
-            +"\nHealth Points: "+ str(self.__health) \
-            +"\nAttak power: " + str(self.__attack_power)
-        return output
-
-    # __str__
     def __str__(self):
         return"[" +self.__fraction[0] +self.__name[0] + " " + "{:02d}".format(self.__cost) + " " + "{:02d}".format(self.__attack_power)  + " " + "{:02d}".format(self.__health) +"]"
+
+    # def __repr__(self):
+    #     output = str(self.__name) \
+    #         + "\nRarity: "+ str(self.__rarity) \
+    #         + "\nFaction: "+ str(self.__fraction) \
+    #         +"\nResource Cost: "+str(self.__cost) \
+    #         +"\nHealth Points: "+ str(self.__health) \
+    #         +"\nAttak power: " + str(self.__attack_power)
+    #     return output
+
+    # __str__
 
     # method:
     def damage(self,amount):
@@ -150,8 +151,8 @@ class Player:
         self.__name = name
 
         self.__score = 20
-
-        self.__max_resource_points = 10
+        self.__prev_p = 0
+        self.__max_resource_points = 0
 
         self.__resource_points = min(0,self.__max_resource_points)
 
@@ -188,21 +189,38 @@ class Player:
 
         return output
     # "[" +self.__name[0] +self.__score[0] + " " + "{:02d}".format(self.__max_resource_points) + " " + "{:02d}".format(self.__resource_points)  + " " + "{:02d}".format(self.__deck) +" " + "{:02d}".format(self.__discarded)+"]"
-
+    def prn_h(self,i):
+        return(repr(self.__hand[i+1]))
+    def prn_b(self,i):
+        return(repr(self.__battalion[i+1]))
+        
     def start_turn(self):
 
-        if self.__max_resource_points < self.__max_resource_points:
+        if self.__resource_points < self.__max_resource_points:
 
-            self.__max_resource_points += 1
+            self.__resource_points += 1
         self.__hand.append(self.__deck.pop())
+        self.__max_resource_points += self.__prev_p 
 
+
+        self.__max_resource_points += 1
+        print(repr(self))
+        
+
+       
+    def has_lost(self):
+        if(self.__score <= 0):
+            return True 
+        return False
      
-
-        if len(self.__deck) > 0:
-
-            card = self.__deck.pop()
-
-            self.__hand.append(card)
-
-            self.__hand.sort()
+    def __str__(self) -> str:
+        return(f"Player: {self.__name}")
+    
+    def __repr__(self) -> str:
+        h = ""
+        for i in self.__hand:
+            h += str(i) + " "
+   
+        return (f"Player: {self.__name}\nScore: {self.__score}\nResource Points: {self.__resource_points}/{self.__max_resource_points}\nDeck: {len(self.__deck)}\nDiscared: {self.__discarded}\nBattalion: {self.__battalion}\nHand: {h}")
+        
 
