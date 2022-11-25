@@ -164,7 +164,7 @@ class Player:
         self.__deck = make_deck(faction)
 
         self.__hand = []
-
+        self.__plays = 0
         self.__battalion = []
 
         self.__discarded = 0
@@ -216,7 +216,7 @@ class Player:
         self.__resource_points = min(self.__resource_points , self.__max_resource_points)
 
 
-        print(repr(self))
+        # print(repr(self))
     def make_move(self, i):
         i = int(i)
         a = self.__hand[i-1]
@@ -225,24 +225,27 @@ class Player:
             self.__resource_points -= c
             self.__prev_p += c
             self.__battalion.append(self.__hand.pop(i-1))
+            self.__plays += 1
             return True
         else:
             print("invalid card")
     def end_turn(self):
         total_dmg = sum([i.get_attack_power() for i in self.__battalion])
         self.__tdm = total_dmg
-        print("DMGGGGGGGGGGGGGGGGGGGGGGG" , total_dmg)
+        # print("DMGGGGGGGGGGGGGGGGGGGGGGG" , total_dmg)
         return self.__tdm
 
     def be_damaged(self , edm):
+        h = False
         while(edm > 0 and len(self.__battalion) > 0):
+            h = True
             i = self.__battalion.pop()
             edm = i.damage(edm)
             if(i.is_conscious() ):
                 self.__battalion.append(i)
             else:
                 self.__discarded +=1
-        if(self.__max_resource_points>1):
+        if(h and edm>0):
             self.__score -= edm
 
             
@@ -255,7 +258,7 @@ class Player:
 
        
     def is_lost(self):
-        if(self.__score <= 0):
+        if(self.__score <= 0 or ( len(self.__hand)== 0 and len(self.__deck) == 0)):
             return True 
         return False
      
